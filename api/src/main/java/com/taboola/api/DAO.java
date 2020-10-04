@@ -39,7 +39,7 @@ public class DAO {
                 stmt.setLong(2, eventid);
             }
             ResultSet set = stmt.executeQuery();
-            if (set.next()) {
+            while (set.next()) {
                 myMap.put(set.getInt(2), set.getInt(4));
             }
         } catch (SQLException e) {

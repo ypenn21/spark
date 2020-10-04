@@ -91,6 +91,7 @@ public class SparkApp {
         Dataset<Row> aggregation =dataFrame.groupBy(col("eventId") , functions.window(col("timestamp"), "5 second")).count().select("eventId", "window.start", "count")
                 .withColumnRenamed("start","time_bucket")
                 .withColumnRenamed("eventId", "event_id").orderBy("time_bucket");
+        aggregation.repartition(col("time_bucket"));
         JavaRDD<Row> rdd = aggregation.toJavaRDD();
         aggregation.show();
         System.out.println("num partitions" +rdd.getNumPartitions());
@@ -116,7 +117,7 @@ public class SparkApp {
                             if (stmt != null) {
                                 stmt.close();
                             }
-//                        System.out.println(row.getTimestamp(1).toString());
+                        System.out.println(row.getTimestamp(1)+" "+row.get(0).toString());
                         }
                     }
 
