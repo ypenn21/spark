@@ -1,0 +1,9 @@
+CREATE TABLE events(
+                        id   INT     IDENTITY         NOT NULL,
+                        event_id INT    NOT NULL,
+                        time_bucket  timestamp              NOT NULL,
+                        count  INT,
+                        PRIMARY KEY (id)
+);
+
+select * from events where EVENT_ID=38 and TIME_BUCKET='2020-10-03 19:37:45.000000';
