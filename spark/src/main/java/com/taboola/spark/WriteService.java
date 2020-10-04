@@ -20,7 +20,7 @@ public class WriteService implements Serializable {
 
     public void writeToDBRdd(Dataset<Row> dataFrame) {
 
-        //used spark query to accomplish the aggregation but if i had more time would like to do it with JavaRDD (map) grouping by timestamp intervals, and then reduce each grouping
+        // used spark query to accomplish the aggregation but if i had more time would like to do it with JavaRDD (map) grouping by timestamp intervals, and then reduce each grouping
         // to caculate the count that way when there is large amounts of data we can utilize the cluster and scale horizontally
         Dataset<Row> aggregation =dataFrame.groupBy(col("eventId") , functions.window(col("timestamp"), "5 second")).count().select("eventId", "window.start", "count")
                 .withColumnRenamed("start","time_bucket")
@@ -38,7 +38,8 @@ public class WriteService implements Serializable {
                     while (it.hasNext()) {
                         Row row = it.next();
                         PreparedStatement stmt = null;
-                        //I just did this because its quick i should configure a datasource and connection pool and create a dao class but since this is just poc. In production I would
+                        //ToDO Water mark set for 1 minutefor so for these delayed message handling we can also query on event_id and time_bucket to
+                        // see if it exists and if it does update the count by adding it to existing count
                         String sql = "INSERT INTO EVENTS (event_id, time_bucket, count) " +
                                 "VALUES (?, ?, ?)";
                         try {
