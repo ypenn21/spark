@@ -45,24 +45,10 @@ public class SparkApp {
         // an eventId is a number between 0 an 99
         Dataset<Row> events = getEvents(spark);
         events.withWatermark("timestamp","1 minute");
-//        events.write().
 
-//        JavaRDD<Row> eventsRdd =  events.toJavaRDD();
-
-//        eventsRdd.foreachPartition( it -> {
-//                Row rowIterator = (Row) it;
-//                String evt = (String) rowIterator.get(0);
-//                String timeStamp = (String) rowIterator.get(1);
-//                System.out.println("Event is "+evt+" : "+timeStamp);
-//        });
         events.writeStream()
                 .foreachBatch(new PostgresSink()).trigger(Trigger.ProcessingTime(10, TimeUnit.SECONDS)).start();
-        // REPLACE THIS CODE
-        // The spark stream continuously receives messages. Each message has 2 fields:
-        // * timestamp
-        // * event id (valid values: from 0 to 99)
-        //
-        // The spark stream should collect, in the database, for each time bucket and event id, a counter of all the messages received.
+
         spark.streams().awaitAnyTermination();
     }
 
@@ -148,6 +134,7 @@ public class SparkApp {
         persistToDB(aggregation);
     }
 
+    // not being used
     private static void persistToDB(Dataset<Row> dataFrame){
         String url = "jdbc:hsqldb:hsql://localhost/xdb";
         String table = "EVENTS";
