@@ -117,7 +117,7 @@ public class SparkApp {
                             if (stmt != null) {
                                 stmt.close();
                             }
-                        System.out.println(row.getTimestamp(1)+" "+row.get(0).toString());
+                        //System.out.println(row.getTimestamp(1)+" "+row.get(0).toString());
                         }
                     }
 
@@ -132,7 +132,7 @@ public class SparkApp {
                         }
                     }
                 }
-                System.out.println("Done");
+                //System.out.println("Done");
             }
         });
     }
