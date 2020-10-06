@@ -38,7 +38,7 @@ public class WriteService implements Serializable {
                     while (it.hasNext()) {
                         Row row = it.next();
                         PreparedStatement stmt = null;
-                        //ToDO Water mark set for 1 minutefor so for these delayed message handling we can also query on event_id and time_bucket to
+                        //ToDO Water mark set for 1 minute so for these delayed message handling we can also query on event_id and time_bucket to
                         // see if it exists and if it does update the count by adding it to existing count
                         String sql = "INSERT INTO EVENTS (event_id, time_bucket, count) " +
                                 "VALUES (?, ?, ?)";
