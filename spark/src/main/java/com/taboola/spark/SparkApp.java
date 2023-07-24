@@ -43,6 +43,7 @@ public class SparkApp {
         // generate events
         // each event has an id (eventId) and a timestamp
         // an eventId is a number between 0 an 99
+        // with water mark is how you deal with delayed messages. anyting later than 1 minute is dropped: https://stackoverflow.com/questions/48990755/how-does-spark-structured-streaming-determine-an-event-has-arrived-late
         Dataset<Row> events = getEvents(spark);
         events.withWatermark("timestamp","1 minute");
 
